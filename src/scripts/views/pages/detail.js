@@ -1,19 +1,20 @@
-import UrlParser from "../../routes/url-parser";
-import TheMovieDbSource from "../../data/themoviedb-source";
+import UrlParser from '../../routes/url-parser';
+import TheMovieDbSource from '../../data/themoviedb-source';
+import { createMovieDetailTemplate } from '../templates/template-creator';
 
-const Details = {
-    async render(){
-        return `
-        
-        <h2>Detail Page</h2>
-        
-        `;
-    },
+const Detail = {
+  async render() {
+    return `
+      <div id="movie" class="movie"></div>
+    `;
+  },
 
-    async afterRender() {
-        const url = UrlParser.parseActiveUrlWithoutCombiner();
-        const movies = TheMovieDbSource.detailMovie(url.id);
-    }
-}
+  async afterRender() {
+    const url = UrlParser.parseActiveUrlWithoutCombiner();
+    const movie = await TheMovieDbSource.detailMovie(url.id);
+    const movieContainer = document.querySelector('#movie');
+    movieContainer.innerHTML = createMovieDetailTemplate(movie);
+  },
+};
 
-export default Details;
+export default Detail;
